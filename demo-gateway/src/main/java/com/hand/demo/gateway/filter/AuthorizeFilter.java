@@ -5,11 +5,9 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -78,20 +76,20 @@ public class AuthorizeFilter extends ZuulFilter {
      */
     @Override
     public Object run() {
-        RequestContext requestContext = RequestContext.getCurrentContext();
-        HttpServletRequest request = requestContext.getRequest();
-        String accessToken = request.getParameter("access_token");
+         RequestContext requestContext = RequestContext.getCurrentContext();
+         HttpServletRequest request = requestContext.getRequest();
+         String accessToken = request.getParameter("access_token");
         // 模拟授权验证
-        if (Objects.equals(accessToken, AuthorizeFilter.accessToken)) {
-            requestContext.setResponseStatusCode(HttpStatus.OK.value());
-            requestContext.setResponseBody("Authorized.");
-            requestContext.setSendZuulResponse(false);
-        } else {
-            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-            requestContext.setResponseBody(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            // 验证过后，过滤器会继续路由，路由后的过滤器会覆盖上面的设置，因此设置停止向Zuul继续转发
-            requestContext.setSendZuulResponse(false);
-        }
+//        if (Objects.equals(accessToken, AuthorizeFilter.accessToken)) {
+//            requestContext.setResponseStatusCode(HttpStatus.OK.value());
+//            requestContext.setResponseBody("Authorized.");
+//            requestContext.setSendZuulResponse(false);
+//        } else {
+//            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+//            requestContext.setResponseBody(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+//            // 验证过后，过滤器会继续路由，路由后的过滤器会覆盖上面的设置，因此设置停止向Zuul继续转发
+//            requestContext.setSendZuulResponse(false);
+//        }
         return null;
     }
 }

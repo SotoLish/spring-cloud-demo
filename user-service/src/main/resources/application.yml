@@ -1,1 +1,13 @@
-
+server:
+  port: 8804
+spring:
+  application:
+    name: user-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8802/eureka
+# ÈÛ¶Ï·şÎñÆôÓÃ
+feign:
+  hystrix:
+    enabled: true

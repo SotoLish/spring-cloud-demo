@@ -1,1 +1,10 @@
+server:
+  port: 8803
+spring:
+  application:
+    name: area-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8802/eureka
 
