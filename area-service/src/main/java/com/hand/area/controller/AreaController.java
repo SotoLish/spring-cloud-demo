@@ -1,13 +1,13 @@
 package com.hand.area.controller;
 
 import com.hand.area.entity.Country;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.hand.area.service.CountryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * 区域控制层
@@ -16,25 +16,47 @@ import java.util.Map;
  * @date 2019/7/25 09:57
  */
 @RestController
+@RequestMapping("/country")
 public class AreaController {
 
-    private static final Map<Long, Country> COUNTRY_MAP;
+    private CountryService countryService;
 
-    static {
-        Map<Long, Country> countryMap = new HashMap<>();
-        countryMap.put(1L, new Country().setCountryId(1L).setCountryName("中国"));
-        countryMap.put(2L, new Country().setCountryId(2L).setCountryName("其他"));
-        COUNTRY_MAP = Collections.unmodifiableMap(countryMap);
+    @Autowired
+    public AreaController(CountryService countryService) {
+        this.countryService = countryService;
     }
 
-    @GetMapping("/country/{countryId}")
-    public Country queryCountry(@PathVariable long countryId) throws InterruptedException {
-        // 测试超时异常，默认超时是1s，设置延迟3s，触发超时
-//        Thread.sleep(3000);
-        if (COUNTRY_MAP.containsKey(countryId)) {
-            return COUNTRY_MAP.get(countryId);
+    public AreaController() {
+    }
+
+    @GetMapping("/{countryId}")
+    public Country queryCountry(@PathVariable Long countryId) {
+        return countryService.queryById(countryId);
+    }
+
+    @GetMapping
+    public List<Country> list() {
+        return countryService.getList();
+    }
+
+    @PostMapping
+    public Country create(@RequestBody @Validated Country country, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException(bindingResult.toString());
         }
-        throw new RuntimeException("Country not found!");
+        System.out.println(country);
+        return countryService.create(country);
     }
+
+    @PutMapping
+    public Country update (@RequestBody Country country){
+        return countryService.update(country);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        countryService.delete(id);
+    }
+
 
 }

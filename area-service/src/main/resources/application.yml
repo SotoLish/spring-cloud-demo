@@ -3,6 +3,15 @@ server:
 spring:
   application:
     name: area-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    #open-in-view: false
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/springclouddemo?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC
+    username: root
+    password: root
 eureka:
   client:
     service-url:

@@ -11,7 +11,7 @@ zuul:
     user-service:
       path: /user/**
       serviceId: user-service
-      stripPrefix: false
+      # stripPrefix: false
 spring:
   application:
     name: gateway-service

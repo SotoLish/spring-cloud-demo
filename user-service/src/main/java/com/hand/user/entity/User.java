@@ -1,35 +1,51 @@
 package com.hand.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 /**
  * 用户类
  *
  * @author liuqixin
  * @date 2019/7/25 10:15
  */
+@Entity
+@Table(name = "sc_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User {
     /**
      * 用户ID
      */
+    @Id
+    @GeneratedValue
     private Long id;
     /**
      * 用户名
      */
+    @Column
+    @NotBlank
     private String username;
     /**
      * 邮箱
      */
+    @Column
     private String email;
     /**
      * 性别
      */
+    @Column
     private String sex;
     /**
      * 国家ID
      */
+    @Column
     private Long countryId;
     /**
      * 国家名称
      */
+    @Transient // 此属性不作为数据库字段
     private String countryName;
 
     public Long getId() {
